@@ -8,3 +8,5 @@ image viewer aspiring to be like edisplay (http://exactcode.com/opensource/exact
 ... because https://github.com/cameronmott/QTImageDisplayApp came up short
 
 ... and I haven't checked all https://github.com/search?q=qtimageviewer
+
+... and uses OpenCV to make things faster to deliver
