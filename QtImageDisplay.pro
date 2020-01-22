@@ -1,3 +1,4 @@
+
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -22,6 +23,12 @@ SOURCES += \
 HEADERS += \
     imagedisplay.h \
 
+unix{
+CONFIG += link_pkgconfig
+PKGCONFIG += opencv
+#qwt
+#include ( /usr/local/qwt-6.1.4/features/qwt.prf )
+}
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

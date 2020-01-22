@@ -6,19 +6,22 @@
 #include <imagedisplay.h>
 #include <QString>
 
+#define BARWIDTH 200
+#define SCREEN_WIDTH 1920
+#define SCREEN_HEIGHT 1080
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    imagedisplay picture(QString::fromLocal8Bit(argv[1]));
-    picture.setText("abc");
-    picture.setMinimumSize(200,200);
+    imagedisplay picture(argv[1]);
+    picture.setMinimumSize(BARWIDTH,BARWIDTH);
+    picture.setMaximumSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     QLineEdit linePosition;
     linePosition.setReadOnly(true);
-    linePosition.setText("12312312");
+    linePosition.setMinimumWidth(BARWIDTH);
     QLineEdit lineRGB;
     lineRGB.setReadOnly(true);
-    lineRGB.setText("gogogogo");
+    lineRGB.setMinimumWidth(BARWIDTH);
 
     QWidget display;
     QGridLayout layout;
@@ -26,10 +29,16 @@ int main(int argc, char *argv[])
 
     layout.addWidget(&linePosition, 0, 0, Qt::AlignLeft);
     layout.addWidget(&lineRGB, 0, 1, Qt::AlignRight);
-    layout.addWidget(&picture, 1, 1, Qt::AlignCenter);
+    layout.addWidget(&picture, 1, 0, 2, Qt::AlignCenter);
+
+    //QObject::connect(cameraHead1, SIGNAL(getImage(QImage)), camimage, SLOT(receiveBitmap(QImage)));
+
+    QObject::connect(&picture, SIGNAL(pixelPosition(QString)), \
+                     &linePosition, SLOT(setText(QString)));
+    QObject::connect(&picture, SIGNAL(pixelValue(QString)), \
+                     &lineRGB, SLOT(setText(QString)));
 
     display.show();
-
 
     return a.exec();
 }

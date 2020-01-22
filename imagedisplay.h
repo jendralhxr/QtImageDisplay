@@ -4,14 +4,16 @@
 #include <QObject>
 #include <QWidget>
 #include <QLabel>
+#include <opencv/cv.hpp>
 
+using namespace cv;
 
 class imagedisplay : public QLabel
 {
     Q_OBJECT
 public:
     explicit imagedisplay(QWidget *parent = nullptr);
-    imagedisplay(QString filename);
+    imagedisplay(char* filename);
 
 signals:
     void pixelPosition(QString pos);
@@ -29,7 +31,7 @@ public slots:
 private:
     int imageWidth, imageHeight;
     int displayWidth, displayHeight;
-
+    cv::Mat image;
 };
 
 #endif // IMAGEDISPLAY_H
