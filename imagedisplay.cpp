@@ -19,8 +19,8 @@ imagedisplay::imagedisplay(char* filename){
 
 void imagedisplay::mouseMoveEvent(QMouseEvent *ev){
     //qDebug("move %d %d from %d %d", ev->x(), ev->y(), ev->globalX(), ev->globalY());
-    int x= ev->x() * zoomscale;
-    int y= ev->y() * zoomscale;
+    int x= ev->x() / zoomscale;
+    int y= ev->y() / zoomscale;
     emit(pixelPosition(QString::asprintf("x,y: %d %d",x, y )));
     emit(pixelValue(QString::asprintf("RGB: %d %d %d",\
         image.data[(image.cols*y+x)*image.channels()], \
