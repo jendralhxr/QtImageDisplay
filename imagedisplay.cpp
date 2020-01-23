@@ -31,10 +31,10 @@ void imagedisplay::mouseMoveEvent(QMouseEvent *ev){
 void imagedisplay::mousePressEvent(QMouseEvent *ev){
     qDebug("pressed %d %d: %d", ev->x(), ev->y(), ev->button());
     switch(ev->button()){
-    case 1:
+    case 2:
         rotate(image, image, ROTATE_90_CLOCKWISE);
         break;
-    case 2:
+    case 1:
         rotate(image, image, ROTATE_90_COUNTERCLOCKWISE);
         break;
     default: break;
