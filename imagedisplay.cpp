@@ -2,14 +2,18 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 
-
 imagedisplay::imagedisplay(QWidget *parent) : QLabel(parent){
 setMouseTracking(true);
 }
 
 imagedisplay::imagedisplay(char* filename){
     setMouseTracking(true);
-    image= imread(filename, CV_LOAD_IMAGE_COLOR);
+#ifdef OPENCV3
+    image= imread(filename, CV_LOAD_IMAGE_COLOR); // opencv3
+#endif
+#ifdef OPENCV4
+    image= imread(filename, IMREAD_ANYCOLOR); // opencv4
+#endif
     updateRender();
 }
 
@@ -42,7 +46,12 @@ void imagedisplay::wheelEvent(QWheelEvent *ev){
     if (ev->delta()==120) zoomscale += SCALING_INCREMENT;
     else if (ev->delta()==-120) zoomscale -= SCALING_INCREMENT;
     //qDebug("scroll %d %d %f", ev->buttons(), ev->delta(), zoomscale);
-    cv::resize(image, image, cv::Size(0,0), zoomscale, zoomscale, CV_INTER_LINEAR);
+#ifdef OPENCV3
+    cv::resize(image, image, cv::Size(0,0), zoomscale, zoomscale, CV_INTER_LINEAR); // opencv3
+#endif
+#ifdef OPENCV4
+    cv::resize(image, image, cv::Size(0,0), zoomscale, zoomscale, INTER_LINEAR); // opencv4
+#endif
     updateRender();
 }
 
