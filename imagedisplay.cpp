@@ -19,8 +19,9 @@ imagedisplay::imagedisplay(char* filename){
 
 void imagedisplay::mouseMoveEvent(QMouseEvent *ev){
     //qDebug("move %d %d from %d %d", ev->x(), ev->y(), ev->globalX(), ev->globalY());
-    int x= ev->x() / zoomscale;
-    int y= ev->y() / zoomscale;
+    int x, y;
+    x= int (double(ev->x()) / zoomscale) ;
+    y= int (double(ev->y()) / zoomscale) ;
     emit(pixelPosition(QString::asprintf("x,y: %d %d",x, y )));
     emit(pixelValue(QString::asprintf("RGB: %d %d %d",\
         image.data[(image.cols*y+x)*image.channels()], \
@@ -30,22 +31,14 @@ void imagedisplay::mouseMoveEvent(QMouseEvent *ev){
 
 void imagedisplay::mousePressEvent(QMouseEvent *ev){
     qDebug("pressed %d %d: %d", ev->x(), ev->y(), ev->button());
+
     switch(ev->button()){
     case 2:
-        rotate(image, image, ROTATE_90_CLOCKWISE);
-        break;
+        zoomscale += SCALING_INCREMENT;break;
     case 1:
-        rotate(image, image, ROTATE_90_COUNTERCLOCKWISE);
-        break;
+        zoomscale -= SCALING_INCREMENT;break;
     default: break;
     }
-    updateRender();
-}
-
-void imagedisplay::wheelEvent(QWheelEvent *ev){
-    if (ev->delta()==120) zoomscale += SCALING_INCREMENT;
-    else if (ev->delta()==-120) zoomscale -= SCALING_INCREMENT;
-    //qDebug("scroll %d %d %f", ev->buttons(), ev->delta(), zoomscale);
 #ifdef OPENCV3
     cv::resize(image, image, cv::Size(0,0), zoomscale, zoomscale, CV_INTER_LINEAR); // opencv3
 #endif
@@ -55,9 +48,17 @@ void imagedisplay::wheelEvent(QWheelEvent *ev){
     updateRender();
 }
 
+void imagedisplay::wheelEvent(QWheelEvent *ev){
+    //qDebug("scroll %d %d %f", ev->buttons(), ev->delta(), zoomscale);
+    if (ev->delta()==120) rotate(image, image, ROTATE_90_CLOCKWISE);
+    else if (ev->delta()==-120) rotate(image, image, ROTATE_90_COUNTERCLOCKWISE);
+    updateRender();
+}
+
 void imagedisplay::updateRender(){
     setPixmap(QPixmap::fromImage(QImage(static_cast<unsigned char*>(image.data), \
         image.cols, image.rows, 3*image.cols, QImage::Format_RGB888).rgbSwapped()));
+    this->setFixedSize(image.cols, image.rows);
     update();
 }
 
