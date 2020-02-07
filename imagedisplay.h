@@ -38,7 +38,7 @@ private:
     int imageWidth, imageHeight;
     int displayWidth, displayHeight;
     double zoomscale= 1;
-    cv::Mat image;
+    cv::Mat image, source;
 };
 
 #endif // IMAGEDISPLAY_H
