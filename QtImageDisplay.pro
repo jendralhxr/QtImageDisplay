@@ -19,10 +19,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     imagedisplay.cpp \
-    main.cpp
+    main.cpp \
+    display.cpp
 
 HEADERS += \
     imagedisplay.h \
+    display.h
 
 unix{
 CONFIG += link_pkgconfig

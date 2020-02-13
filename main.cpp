@@ -1,10 +1,11 @@
 #include <QApplication>
 #include <QLineEdit>
 #include <QLabel>
-#include <QGridLayout>
+#include <QVBoxLayout>
 #include <QWidget>
 #include <imagedisplay.h>
 #include <QString>
+#include <display.h>
 
 #define BARWIDTH 200
 int main(int argc, char *argv[])
@@ -19,19 +20,22 @@ int main(int argc, char *argv[])
     lineRGB.setReadOnly(true);
     lineRGB.setMinimumWidth(BARWIDTH);
 
-    QWidget display;
-    QGridLayout layout;
-    display.setLayout(&layout);
+    display disp;
+    QVBoxLayout layout;
+    disp.setLayout(&layout);
 
-    layout.addWidget(&linePosition, 0, 0, Qt::AlignLeft);
-    layout.addWidget(&lineRGB, 0, 1, Qt::AlignRight);
-    layout.addWidget(&picture, 1, 0, 2, Qt::AlignCenter);
+
+    layout.addWidget(&linePosition, 0, Qt::AlignLeft);
+    layout.addWidget(&lineRGB, 0, Qt::AlignLeft);
+    layout.addWidget(&picture, 0, Qt::AlignCenter);
+    layout.setSizeConstraint(QLayout::SetFixedSize);
+
+    disp.show();
 
     QObject::connect(&picture, SIGNAL(pixelPosition(QString)), \
                      &linePosition, SLOT(setText(QString)));
     QObject::connect(&picture, SIGNAL(pixelValue(QString)), \
                      &lineRGB, SLOT(setText(QString)));
-    display.show();
 
     return a.exec();
 }

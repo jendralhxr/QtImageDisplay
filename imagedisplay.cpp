@@ -1,12 +1,14 @@
 #include "imagedisplay.h"
 #include <QMouseEvent>
 #include <QWheelEvent>
+#include <QKeyEvent>
 
 imagedisplay::imagedisplay(QWidget *parent) : QLabel(parent){
-    setMouseTracking(true);
 }
 
 imagedisplay::imagedisplay(char* filename){
+    setFocusPolicy(Qt::StrongFocus);
+
     this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     setMouseTracking(true);
 #ifdef OPENCV3
@@ -20,7 +22,6 @@ imagedisplay::imagedisplay(char* filename){
 }
 
 void imagedisplay::mouseMoveEvent(QMouseEvent *ev){
-    //qDebug("move %d %d from %d %d", ev->x(), ev->y(), ev->globalX(), ev->globalY());
     double x, y;
     x= ev->x() / zoomscale;
     y= ev->y() / zoomscale;
@@ -32,7 +33,6 @@ void imagedisplay::mouseMoveEvent(QMouseEvent *ev){
 }
 
 void imagedisplay::mousePressEvent(QMouseEvent *ev){
-    qDebug("pressed %d %d: %d %f", ev->x(), ev->y(), ev->button(), zoomscale);
     switch(ev->button()){
     case 2: zoomscale += SCALING_INCREMENT; break;
     case 1: zoomscale -= SCALING_INCREMENT; break;
@@ -48,19 +48,16 @@ void imagedisplay::mousePressEvent(QMouseEvent *ev){
 }
 
 void imagedisplay::wheelEvent(QWheelEvent *ev){
-    //qDebug("scroll %d %d %f", ev->buttons(), ev->delta(), zoomscale);
     if (ev->delta()==120) rotate(image, image, ROTATE_90_CLOCKWISE);
     else if (ev->delta()==-120) rotate(image, image, ROTATE_90_COUNTERCLOCKWISE);
     updateRender();
 }
 
 void imagedisplay::updateRender(){
-  qDebug("iamge %d %d %f", image.cols, image.rows, zoomscale);
   setPixmap(QPixmap::fromImage(QImage(static_cast<unsigned char*>(image.data), \
         image.cols, image.rows, 3*image.cols, QImage::Format_RGB888).rgbSwapped()));
   resize(image.cols, image.rows);
   setFrameRect(QRect(0,0,0,0));
   update();
-  updateGeometry();
+ // updateGeometry();
 }
-
