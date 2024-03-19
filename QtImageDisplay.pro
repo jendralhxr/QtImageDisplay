@@ -28,7 +28,7 @@ HEADERS += \
 
 unix{
 CONFIG += link_pkgconfig
-PKGCONFIG += opencv
+PKGCONFIG += opencv4
 #qwt
 #include ( /usr/local/qwt-6.1.4/features/qwt.prf )
 }
