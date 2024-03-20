@@ -6,5 +6,7 @@ display::display(QWidget *parent) : QWidget(parent){
 }
 
 void display::keyPressEvent(QKeyEvent *ev){
+//    qDebug("%d",ev->key());
     if (ev->key()=='Q') exit(0);
 }
+
