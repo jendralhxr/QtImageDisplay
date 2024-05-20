@@ -18,6 +18,7 @@ image::image(char* filename){
     if (numChannels==1){
         source= imread(filename, IMREAD_GRAYSCALE); // opencv4
         cvtColor(source, render, COLOR_GRAY2RGB);
+        cvtColor(source, source, COLOR_GRAY2RGB);
     }
     else {
         source= imread(filename, IMREAD_COLOR); // opencv4
