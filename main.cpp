@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
     layout.setSizeConstraint(QLayout::SetFixedSize);
 
     disp.show();
+    disp.setWindowTitle(argv[1]);
 
     QObject::connect(&picture, SIGNAL(pixelPosition(QString)), \
                      &linePosition, SLOT(setText(QString)));
