@@ -34,9 +34,9 @@ void image::mouseMoveEvent(QMouseEvent *ev){
     //qDebug("%f %f %f %f", x, y, y/zoomscale, y/zoomscale);
     emit(pixelPosition(QString::asprintf("x,y: %d %d", int(x/zoomscale), int(y/zoomscale) )));
     emit(pixelValue(QString::asprintf("RGB: %d %d %d",\
-        render.data[(render.cols*int(y)+int(x))*render.channels()], \
+        render.data[(render.cols*int(y)+int(x))*render.channels() +2], \
         render.data[(render.cols*int(y)+int(x))*render.channels() +1], \
-        render.data[(render.cols*int(y)+int(x))*render.channels() +2] )));
+        render.data[(render.cols*int(y)+int(x))*render.channels()] )));
 }
 
 void image::mousePressEvent(QMouseEvent *ev){
